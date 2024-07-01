@@ -2,6 +2,7 @@
 
 namespace App\Jobs;
 
+use App\Events\ExportReportEvent;
 use App\Models\Reports;
 use App\Models\Sales;
 use Illuminate\Bus\Queueable;
@@ -37,7 +38,7 @@ class ReportExporterJob implements ShouldQueue
         }
         sleep(10);
         $reportId = $this->reports->id;
-        Log::info("Webhook Called");
-        Http::get("http://localhost:8000/webhook?id={$reportId}");
+        Log::info("Event trigger");
+        event(new ExportReportEvent($reportId));
     }
 }
